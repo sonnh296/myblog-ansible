@@ -1,11 +1,18 @@
 pipeline {
     agent any
+    environment {
+        ANSIBLE_HOST_KEY_CHECKING = 'False'
+    }
     stages {
         stage('test ansible') {
-            steps {
-                sh 'ls -la'
-                sh 'ansible --version'
-                sh 'ansible-playbook -i inventory.ini playbook.yml'
+            withCredentials([file(credentialsId: 'ansible_key', variable: 'ansible_key')]) {
+                steps {
+                    sh 'ls -la'
+                    sh 'cp /$ansible_key ansible_key'
+                    sh 'cat ansible_key'
+                    sh 'ansible --version'
+                    sh 'ansible-playbook --private-key ansible_key -i inventory.ini playbook.yml'
+                }
             }
         }
         
