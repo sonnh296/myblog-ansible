@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+    stages {
+        stage('test ansible') {
+            steps {
+                sh 'ls -la'
+                sh 'ansible --version'
+                sh 'ansible-playbook -i inventory.ini playbook.yml'
+            }
+        }
+        
+    }
+    post {
+        // Clean after build
+        always {
+            cleanWs()
+        }
+    }
+}

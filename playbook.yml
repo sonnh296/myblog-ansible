@@ -1,0 +1,13 @@
+- name: ec2plays
+  hosts: servers
+  become: yes
+  become_user: root
+  become_method: sudo
+  remote_user: ubuntu
+  tasks:
+    - name: Ping mt hosts
+      ansible.builtin.ping:
+
+    - name: Print message
+      ansible.builtin.debug:
+        msg: "CONNECTED TO EC2 INSTANCE"
